@@ -1,0 +1,19 @@
+{
+  "name": "jabber",
+  "version": "1.0.0",
+  "description": "A twitter clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TylerWalker12/jabber.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TylerWalker12/jabber/issues"
+  },
+  "homepage": "https://github.com/TylerWalker12/jabber#readme"
+}
