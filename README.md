@@ -1,2 +1,1 @@
-# jabber
-A twitter clone
+
