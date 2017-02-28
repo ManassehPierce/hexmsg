@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/TylerWalker12/jabber/issues"
   },
-  "homepage": "https://github.com/TylerWalker12/jabber#readme"
+  "homepage": "https://github.com/TylerWalker12/jabber#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "socket.io": "^1.7.3"
+  }
 }
