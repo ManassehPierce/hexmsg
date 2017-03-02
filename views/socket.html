@@ -8,12 +8,17 @@
 			document.addEventListener("DOMContentLoaded", function() {
 				document.getElementById("chat_submit").addEventListener("click", function() {
 					socket.emit("message", document.getElementById("chat_input").value);
+					//document.getElementById("messages").innerHTML += document.getElementById("chat_input").value;
+				});
+				socket.on('broadcast', function(data) {
+					document.getElementById("messages").innerHTML += data;
 				});
 			});
 		</script>
 	</head>
 	<body>
 		<p>Hello, and welcome to Jabber. <br/>To start, please sent a message.</p>
+		<div id='messages'></div>
 		<label for="message"><b>Message: </b></label><input id='chat_input' type="text" name="message"/><input id='chat_submit' type="submit" name="submit"/>
 	</body>
 </html>
