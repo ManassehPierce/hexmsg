@@ -5,10 +5,14 @@
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			var socket = io();
+			function sendMessage() {
+				socket.emit("message", document.getElementById("chat_input").value);
+					document.getElementById("chat_input").value = "";
+			}
 			document.addEventListener("DOMContentLoaded", function() {
-				document.getElementById("chat_submit").addEventListener("click", function() {
-					socket.emit("message", document.getElementById("chat_input").value);
-					//document.getElementById("messages").innerHTML += document.getElementById("chat_input").value;
+				document.getElementById("chat_submit").addEventListener("click", sendMessage);
+				document.getElementById("chat_input").addEventListener("keydown", function(key) {
+					if (key.keyCode == 13) sendMessage();
 				});
 				socket.on('broadcast', function(data) {
 					document.getElementById("messages").innerHTML += data;
