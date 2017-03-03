@@ -12,7 +12,6 @@ const io = socketio(Server);
 App.set('views', './views');
 App.use(express.static('public'));
 let clientsOnline = 0;
-let testIPs = ["124.752.631.4"];
 let hash = crypto.createHmac('sha256', testIPs[0])
 	.update("Can't find me now")
 	.digest('hex');
