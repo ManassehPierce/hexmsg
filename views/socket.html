@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Welcome to Jabber!</title>
+		<title>Welcome to HexMSG!</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
@@ -28,11 +28,15 @@
 				document.getElementById("messages_alignment").innerHTML = data;
 			});
 
+			socket.on('client_error', function(data) {
+				alert("Error: " + data);
+			});
+
 		</script>
 	</head>
 	<body>
 		<style type="text/css" id='messages_alignment'></style>
-		<p>Hello, and welcome to Jabber. <br/>To start, please sent a message.</p>
+		<p>Hello, and welcome to HexMSG. <br/>To start, please send a message.</p>
 		<div id='messages'></div>
 		<label for="message"><b>Message: </b></label><input id='chat_input' type="text" name="message"/><input id='chat_submit' type="submit" name="submit"/>
 	</body>
