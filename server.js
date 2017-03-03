@@ -5,7 +5,7 @@ const http = require('http'),
 	socketio = require('socket.io');
 
 // Server Setup
-const ipAddress = "localhost";//"192.168.137.1";
+//const ipAddress = "192.168.2.10";
 const App = express();
 const Server = http.createServer(App);
 const io = socketio(Server);
@@ -16,30 +16,41 @@ let testIPs = ["124.752.631.4"];
 let hash = crypto.createHmac('sha256', testIPs[0])
 	.update("Can't find me now")
 	.digest('hex');
-console.log(hash);
-// Add a view engine later
 
+class Client {
+	constructor(client) {
+		this.id = client.id;
+		this.ip = client.request.connection.remoteAddress;
+		let hash = crypto.createHmac('sha256', this.ip)
+			.update("Can't find me now")
+			.digest('hex');
+		this.color = "#" + hash.slice(0, 6);
+		this.uniqueid = "user_" + hash.slice(0, 6);
+	}
+}
 // Sockets
 io.on('connection', (client) => {
-	console.log("Client connected!", client.request.connection.remoteAddress);
+	let currentClient = new Client(client);
+	io.to(currentClient.id).emit('css', `
+		#${currentClient.uniqueid} {
+			font-style: italic;
+		}
+	`);
+	console.log("Client connected at", currentClient.ip);
 	clientsOnline++;
 	console.log("Currently online:", clientsOnline);
 
 	client.on('message', (data) => {
-		console.log(data);//client.request.connection.remoteAddress;
+		console.log(data);
 		data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-		let hash = crypto.createHmac('sha256', testIPs[0])
-			.update("Can't find me now")
-			.digest('hex');
-		color = "#" + hash.slice(0, 6);
 		html = `
-			<div><p style='color: ${color};'>${data}</p></div>
+			<div><p id='${currentClient.uniqueid}' style='color: ${currentClient.color};'>${data}</p></div>
 		`;
 		io.sockets.emit('broadcast', html);
 	});
 
 	client.on('disconnect', () => {
-		console.log("Client disconnected!");
+		console.log("Client disconnected at", currentClient.ip);
 		clientsOnline--;
 		console.log("Currently online:", clientsOnline);
 	});
@@ -52,6 +63,6 @@ App.get('/', (req, res) => {
 });
 
 // Server Listener
-Server.listen(8000, ipAddress, () => {
+Server.listen(8000, () => {
 	console.log("Server is running");
 });
