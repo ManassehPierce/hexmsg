@@ -62,6 +62,6 @@ App.get('/', (req, res) => {
 });
 
 // Server Listener
-Server.listen(8000, () => {
+Server.listen(process.env.PORT, () => {
 	console.log("Server is running");
 });
