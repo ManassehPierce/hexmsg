@@ -6,6 +6,7 @@ const http = require('http'),
 
 // Server Setup
 //const ipAddress = "192.168.2.10";
+// TODO: Make the hashing secret actually secret and update the port variables, also fix typo on / and limit message length
 const App = express();
 const Server = http.createServer(App);
 const io = socketio(Server);
