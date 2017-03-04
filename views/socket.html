@@ -1,10 +1,98 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Welcome to HexMSG!</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8"/>
+		<title>HEXMSG</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+		<style type="text/css">
+			body {
+					margin: 0;
+					overflow: hidden;
+					background-color: #EEEEEE;
+					color: black;
+					font-family: "Roboto", sans-serif;
+					font-size: 16px;
+					-webkit-text-size-adjust: 100%;
+				}
+
+				.header {
+					padding: 12px 20px;
+					background-color: #439674;
+					position: fixed;
+					display: block;
+					top: 0;
+					left: 0;
+					right: 0;
+					margin-bottom: -50px;
+					text-align: center;
+					box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+				}
+
+				.header a {
+					color: #ffffff;
+					text-decoration: none;
+				}
+
+				input[type=text] {
+					font-family: "Roboto", sans-serif;
+        	position: fixed;
+					margin: 0;
+					width: 100%;
+					bottom: 0;
+        	padding: 12px 20px;
+        	border: none;
+        	border-radius: 0;
+        	-webkit-appearance: none;
+        	-moz-appearance: none;
+        	appearance: none;
+        	font-size: 16px;
+        	cursor: text;
+				}
+
+				#messages {
+					margin-top: 50px;
+					padding: 12px 20px;
+					height: 100%;
+					white-space: nowrap;
+					overflow-x: hidden;
+					overflow-y: auto;
+				}
+
+				.message {
+					margin-top: 10px;
+					padding: 12px 20px;
+					display: inline-block;
+					max-width: 70%;
+					clear: both;
+					border-radius: 2px 20px 20px 20px;
+					float: left;
+					background-color: #BC698B;
+					color: white;
+				}
+
+				#messages .message:last-child {
+					margin-bottom: 80px;
+				}
+
+				.message p {
+					text-align: left;
+					font-size: 16px;
+					-webkit-margin-before: 0em;
+					-webkit-margin-after: 0em;
+					white-space: initial;
+					-ms-word-break: break-all;
+				 	word-break: break-all;
+					word-break: break-word;
+				}
+
+				.message.sent {
+					border-radius: 20px 2px 20px 20px;
+					float: right;
+				}
+		</style>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
+			var userid;
 			var socket = io(); // Linking the socket object to the server
 			function sendMessage() { // Sends a message back to the server
 				socket.emit("message", document.getElementById("chat_input").value);
@@ -20,12 +108,13 @@
 			});
 
 			// Socket Events
-			socket.on('broadcast', function(data) {
-				document.getElementById("messages").innerHTML += data; // On receiving data from the server, it appends it to the messages body
+			socket.on('broadcast', function(data) { // On receiving data from the server, it appends it to the messages body
+				if (userid == data.clientid) document.getElementById("messages").innerHTML += `<div class='message sent' style='background-color:${data.color}'>${data.message_html}</div>`; // If the sender was the current client...
+				else document.getElementById("messages").innerHTML += `<div class='message' style='background-color:${data.color}'>${data.message_html}</div>`;
 			});
 
-			socket.on('css', function(data) {
-				document.getElementById("messages_alignment").innerHTML = data;
+			socket.on('startup', function(data) {
+				userid = data.userid;
 			});
 
 			socket.on('client_error', function(data) {
@@ -36,8 +125,12 @@
 	</head>
 	<body>
 		<style type="text/css" id='messages_alignment'></style>
-		<p>Hello, and welcome to HexMSG. <br/>To start, please send a message.</p>
-		<div id='messages'></div>
-		<label for="message"><b>Message: </b></label><input id='chat_input' type="text" name="message"/><input id='chat_submit' type="submit" name="submit"/>
+		<div class="header">
+			<a href="#">HEXMSG</a>
+		</div>
+		<div id='messages'>
+			<div class='message from'><p>Hello, and welcome to HexMSG. <br/>To start, please send a message.</p></div>
+		</div>
+		<input id='chat_input' type="text" placeholder="Message" /><input style='display:none;' id='chat_submit' type="submit" name="submit"/>
 	</body>
 </html>

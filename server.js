@@ -7,6 +7,7 @@ const http = require('http'),
 // Server Setup
 //const ipAddress = "192.168.2.10";
 let port = process.env.PORT || 8000; // Using Heroku's port if available, if not, use 8000
+// Move JS to external file, minified
 const App = express();
 const Server = http.createServer(App);
 const io = socketio(Server);
@@ -29,23 +30,20 @@ class Client { // The Client class
 // Sockets
 io.on('connection', (client) => {
 	let currentClient = new Client(client); // Making an instance of the Client class
-	io.to(currentClient.id).emit('css', `
-		#${currentClient.uniqueid} {
-			font-style: italic;
-		}
-	`);
+	// Sending the client it's css code and userid on join
+	io.to(currentClient.id).emit('startup', {userid: currentClient.uniqueid});
 	console.log("Client connected at", currentClient.ip);
 	clientsOnline++; // Incrementing users online upon a connection
 
 	client.on('message', (data) => {
-		if (data.length < 1000) { // Ensuring that messages aren't too long for the server to handle
+		if (data.length < 1000 && data.length >= 1) { // Ensuring that messages aren't too long for the server to handle
 			data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;").toLowerCase(); // Escaping html characters to prevent xss and other nasty things
 			html = `
-				<div><p id='${currentClient.uniqueid}' style='color: ${currentClient.color};'>${data}</p></div>
+				<p id='${currentClient.uniqueid}'>${data}</p>
 			`; // The html to be injected into the client's page
-			io.sockets.emit('broadcast', html); // Sending the html to the client
+			io.sockets.emit('broadcast', {"message_html": html, "clientid": currentClient.uniqueid, "color":currentClient.color}); // Sending the html to the client
 		} else {
-			io.to(currentClient.id).emit('client_error', "Message too long, please use < 1000 characters!"); // Throwing an error if the message is over 1000 characters
+			io.to(currentClient.id).emit('client_error', "Messages need to be between 1 - 1000 characters!"); // Throwing an error if the message is over 1000 characters
 		}
 	});
 
@@ -59,6 +57,10 @@ io.on('connection', (client) => {
 // Routes
 App.get('/', (req, res) => {
 	res.sendFile(__dirname + "/views/socket.html"); // Sending the html file when the website's root is visited
+});
+
+App.get('/hexmsg', (req, res) => {
+	res.sendFile(__dirname + "/views/hexmsg.html");
 });
 
 // Server Listener
