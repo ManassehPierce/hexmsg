@@ -38,10 +38,8 @@ io.on('connection', (client) => {
 	client.on('message', (data) => {
 		if (data.length < 1000 && data.length >= 1) { // Ensuring that messages aren't too long for the server to handle
 			data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;").toLowerCase(); // Escaping html characters to prevent xss and other nasty things
-			html = `
-				<p id='${currentClient.uniqueid}'>${data}</p>
-			`; // The html to be injected into the client's page
-			io.sockets.emit('broadcast', {"message_html": html, "clientid": currentClient.uniqueid, "color":currentClient.color}); // Sending the html to the client
+			text = `${data}`; // The html to be injected into the client's page
+			io.sockets.emit('broadcast', {"text": text, "clientid": currentClient.uniqueid, "color": currentClient.color}); // Sending the html to the client
 		} else {
 			io.to(currentClient.id).emit('client_error', "Messages need to be between 1 - 1000 characters!"); // Throwing an error if the message is over 1000 characters
 		}
@@ -50,6 +48,10 @@ io.on('connection', (client) => {
 	client.on('disconnect', () => {
 		console.log("Client disconnected at", currentClient.ip);
 		clientsOnline--; // Decrementing users online upon a user leaving
+	});
+
+	client.on('test', (data, res) => {
+		res("You just sent: " + data);
 	});
 
 });

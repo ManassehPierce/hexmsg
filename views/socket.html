@@ -126,8 +126,8 @@
 			socket.on('broadcast', function(data) { // On receiving data from the server, it appends it to the messages body
 				var messagesDiv = document.getElementById("messages");
 				var oldScrollHeight = messagesDiv.scrollHeight;
-				if (userid == data.clientid) messagesDiv.innerHTML += `<div class='message sent' style='background-color:${data.color}'>${data.message_html}</div>`; // If the sender was the current client...
-				else messagesDiv.innerHTML += `<div class='message' style='background-color:${data.color}'>${data.message_html}</div>`;
+				if (userid == data.clientid) messagesDiv.innerHTML += `<div class='message sent' style='background-color:${data.color}'><p id='${data.clientid}'>${data.text}</p></div>`; // If the sender was the current client...
+				else messagesDiv.innerHTML += `<div class='message' style='background-color:${data.color}'><p id='${data.clientid}'>${data.text}</p></div>`;
 				if (messagesDiv.scrollTop == (oldScrollHeight - initialScrollHeight)) {
 					messagesDiv.scrollTop = messagesDiv.scrollHeight;
 				}
