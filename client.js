@@ -50,6 +50,5 @@ io.on('startup', (data) => {
 
 io.on('broadcast', (data) => {
 	let color = new RGBcolor(data.color);
-	console.log(data)
-	if (userid != data.clientid) console.log(color.returnColoredText(data.text));
+	if (userid != data.clientid) console.log(color.returnColoredText(data.text.replace(/&lt;/g, "<").replace(/&gt;/g, ">")));
 });
