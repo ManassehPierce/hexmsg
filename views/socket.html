@@ -15,86 +15,90 @@
 					-webkit-text-size-adjust: 100%;
 				}
 
-				.header {
-					padding: 12px 20px;
-					background-color: #439674;
-					position: fixed;
-					display: block;
-					top: 0;
-					left: 0;
-					right: 0;
-					margin-bottom: -50px;
-					text-align: center;
-					box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-				}
+			a {
+				color: white;
+			}
 
-				.header a {
-					color: #ffffff;
-					text-decoration: none;
-				}
+			.header {
+				padding: 12px 20px;
+				background-color: #439674;
+				position: fixed;
+				display: block;
+				top: 0;
+				left: 0;
+				right: 0;
+				margin-bottom: -50px;
+				text-align: center;
+				box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+			}
 
-				input[type=text] {
-					font-family: "Roboto", sans-serif;
-        	position: fixed;
-					/*margin: 0;*/
-					width: 100%;
-					bottom: 0;
-        	padding: 12px 20px;
-        	border: none;
-        	border-radius: 0;
-        	-webkit-appearance: none;
-        	-moz-appearance: none;
-        	appearance: none;
-        	font-size: 16px;
-        	cursor: text;
-				}
+			input[type=text] {
+				font-family: "Roboto", sans-serif;
+      	position: fixed;
+				/*margin: 0;*/
+				width: 100%;
+				bottom: 0;
+      	padding: 12px 20px;
+      	border: none;
+      	border-radius: 0;
+      	-webkit-appearance: none;
+      	-moz-appearance: none;
+      	appearance: none;
+      	font-size: 16px;
+      	cursor: text;
+			}
 
-				#messages {
-					margin-top: 50px;
-					margin-bottom: 50px;
-					/*padding: 12px 20px;*/
-					height: 100%;
-					width: 100%;
-					position: fixed;
-					white-space: nowrap;
-					/*overflow-x: hidden; */
-					overflow-y: auto;
-				}
+			#messages {
+				margin-top: 50px;
+				margin-bottom: 50px;
+				/*padding: 12px 20px;*/
+				height: 100%;
+				width: 100%;
+				position: fixed;
+				white-space: nowrap;
+				/*overflow-x: hidden; */
+				overflow-y: auto;
+			}
 
-				.message {
-					margin-top: 10px;
-					padding: 12px 20px;
-					margin-left: 20px;
-					margin-right: 20px;
-					/*margin: 12px 20px;*/
-					display: inline-block;
-					max-width: 70%;
-					clear: both;
-					border-radius: 2px 20px 20px 20px;
-					float: left;
-					background-color: #BC698B;
-					color: white;
-				}
+			.message {
+				margin-top: 10px;
+				padding: 12px 20px;
+				margin-left: 20px;
+				margin-right: 20px;
+				/*margin: 12px 20px;*/
+				display: inline-block;
+				max-width: 70%;
+				clear: both;
+				border-radius: 2px 20px 20px 20px;
+				float: left;
+				background-color: #BC698B;
+				color: white;
+				box-shadow: 3px 3px 3px lightgray;
+			}
 
-				#messages .message:last-child {
-					margin-bottom: 6.5em;
-				}
+			#messages .message:last-child {
+				margin-bottom: 6.5em;
+			}
 
-				.message p {
-					text-align: left;
-					font-size: 16px;
-					-webkit-margin-before: 0em;
-					-webkit-margin-after: 0em;
-					white-space: initial;
-					-ms-word-break: break-all;
-				 	word-break: break-all;
-					word-break: break-word;
-				}
+			.message p {
+				text-align: left;
+				font-size: 16px;
+				-webkit-margin-before: 0em;
+				-webkit-margin-after: 0em;
+				white-space: initial;
+				-ms-word-break: break-all;
+			 	word-break: break-all;
+				word-break: break-word;
+			}
 
-				.message.sent {
-					border-radius: 20px 2px 20px 20px;
-					float: right;
-				}
+			.message.sent {
+				border-radius: 20px 2px 20px 20px;
+				float: right;
+			}
+
+			.message.from.bot {
+				border: .15em solid white;
+			}
 
 		</style>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -146,10 +150,11 @@
 	<body>
 		<style type="text/css" id='messages_alignment'></style>
 		<div class="header">
-			<a href="#">HEXMSG</a>
+			<a>HEXMSG</a>
 		</div>
 		<div id='messages'>
-			<div class='message from'><p>Hello, and welcome to HexMSG. <br/>To start, please send a message.</p></div>
+			<div class='message from bot'><p>hello, and welcome to hexmsg. <br/>to start, please send a message.</p></div>
+			<div class='message from bot'><p>bugs? we got plenty. feel free to report them on our <a href="https://github.com/tylerwalker12/hexmsg/issues" target="_blank">issue tracker</a>.</p></div>
 		</div>
 		<input id='chat_input' type="text" placeholder="Message" /><input style='display:none;' id='chat_submit' type="submit" name="submit"/>
 	</body>
