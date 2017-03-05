@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/TylerWalker12/jabber#readme",
   "dependencies": {
+    "colors": "^1.1.2",
     "express": "^4.14.1",
     "socket.io": "^1.7.3"
   }
